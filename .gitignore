@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Virtual envs
+.venv/
+venv/
+
+# uv
+# uv.lock IS tracked (lockfile reproducibility)
+
+# Generated training artifacts (regenerable)
+data/
+runs/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.sw?
