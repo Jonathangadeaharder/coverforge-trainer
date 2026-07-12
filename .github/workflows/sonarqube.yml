@@ -1,4 +1,4 @@
-name: SonarCloud
+name: SonarQube
 
 on:
   push:
@@ -11,22 +11,24 @@ permissions:
   pull-requests: write
 
 jobs:
-  sonarcloud:
-    name: SonarCloud Analysis
-    runs-on: [self-hosted, macOS, ARM64, VidiomTM]
+  sonarqube:
+    name: SonarQube
+    runs-on: [self-hosted, maCOS, ARM64, VidiomTM]
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: SonarCloud Scan
+      - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://localhost:9001
       - name: Print failing quality gate conditions
         if: failure()
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          curl -sS --max-time 10 "https://sonarcloud.io/api/qualitygates/project_status?projectKey=Jonathangadeaharder_coverforge-trainer" \
-            -H "Authorization: Bearer $SONAR_TOKEN" \
+          BASE="http://localhost:9001"
+          curl -sS --max-time 10 -u "$SONAR_TOKEN:" \
+            "$BASE/api/qualitygates/project_status?projectKey=VidiomTM_coverforge-trainer" \
             | jq '.projectStatus.conditions[] | select(.status=="ERROR")' || true
